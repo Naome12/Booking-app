@@ -1,12 +1,5 @@
 import { createContext, useEffect, useReducer } from "react";
 
-const INITIAL_STATE = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
-  loading: false,
-  error: null,
-};
-
-export const AuthContext = createContext(INITIAL_STATE);
 
 const AuthReducer = (state, action) => {
   switch (action.type) {
@@ -40,22 +33,15 @@ const AuthReducer = (state, action) => {
 };
 
 export const AuthContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(AuthReducer);
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(state.user));
-  }, [state.user]);
+    localStorage.setItem("user", JSON.stringify(state));
+  }, [state]);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user: state.user,
-        loading: state.loading,
-        error: state.error,
-        dispatch,
-      }}
-    >
+    <div>
       {children}
-    </AuthContext.Provider>
+    </div>
   );
 };
